@@ -20,7 +20,7 @@ namespace TetrisGame
         //fill out the required properties
         //the id should be 1
         public override int Id => 1;
-        //the start pffset should be -1 3 => this will make the block spawn in the middle of the top row
+        //the start offset should be -1 3 => this will make the block spawn in the middle of the top row
         protected override Position StartOffset => new Position(-1, 3);
         //for the tiles property we freturn the tiles array above
         protected override Position[][] Tiles => tiles;

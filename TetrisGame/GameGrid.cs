@@ -27,5 +27,47 @@ namespace TetrisGame
             Columns = columns;
             grid = new int[Rows, Columns];
         }
+
+        //convenience methods 
+
+        //Method to check if the given row and column is inside the grid or not
+        public bool IsInside(int r, int c)
+        { 
+            return r >= 0 && r < Rows && c >= 0 && c < Columns;
+        }
+
+        //Method to check if a given cell is empty or not
+        public bool IsEmpty(int r, int c)
+        {
+            //it must be inside the grid and the value at that entry in the array must be 0
+            return IsInside(r, c) && grid[r, c] == 0;
+        }
+
+        //Method to check if an entire row is full
+        public bool IsRowFull(int r)
+        {
+            for (int c = 0; c < Columns; c++)
+            {
+                if (grid[r, c] == 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        //Method to check if an entire row is empty
+        public bool IsRowEmpty(int r)
+        {
+            for (int c = 0; c < Columns; c++)
+            {
+                if (grid[r, c] != 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+
+        }
     }
 }

@@ -67,7 +67,50 @@ namespace TetrisGame
                 }
             }
             return true;
-
         }
+
+        //Method to clear a row
+        private void ClearRow(int r)
+        {
+            for (int c = 0; r < Columns; c++)
+            {
+                grid[r, c] = 0;
+            }
+        }
+
+        //Method to move a row down by a certain number of rows
+        private void MoveRowDown(int r, int numRows)
+        {
+            for (int c=0; c< Columns; c++)
+            {
+                grid[r + numRows, c] = grid[r, c];
+                grid[r, c] = 0;
+            }
+            //now we can implement a ClearFullRows method
+        }
+
+        //Method to clear full rows
+        public int ClearFullRows()
+        {
+            //the cleared variable starts at 0 and we move from the bottom row towards the top
+            int cleared = 0;
+            for (int r = Rows - 1; r >= 0; r--)
+            {
+                //we check if the current row is full and if it is => we clear it and increment 'cleared'
+                if (IsRowFull(r))
+                {
+                    ClearRow(r);
+                    cleared++;
+                }
+                else if (cleared > 0)
+                {
+                    //otherwise if 'cleared' is greater than 0 then we move the current row down by the number of cleared rows 
+                    MoveRowDown(r, cleared);
+                }
+            }
+            //in the end we return the number of cleared rows
+            return cleared;
+        }
+
     }
 }

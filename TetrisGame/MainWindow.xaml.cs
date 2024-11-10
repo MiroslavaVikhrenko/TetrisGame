@@ -105,7 +105,9 @@ namespace TetrisGame
                 for (int c = 0;c < grid.Columns; c++)
                 {
                     //for each position we get the start id 
-                    int id = grid[r, c];
+                    int id = grid[r,c];
+                    //reset opacity we set for ghost block
+                    imageControls[r,c].Opacity = 1;
                     //set the source of the image at this position using the id
                     imageControls[r,c].Source = tileImages[id];
                 }
@@ -118,6 +120,8 @@ namespace TetrisGame
             //Loop through the tile positions and update the image sources in the same way as above
             foreach (Position p in block.TilePosition())
             {
+                //reset opacity we set for ghost block
+                imageControls[p.Row, p.Column].Opacity = 1;
                 imageControls[p.Row, p.Column].Source = tileImages[block.Id];
             }
         }
@@ -142,10 +146,26 @@ namespace TetrisGame
             }
         }
 
+        //Mathod to draw a ghost block to show the player where the block would land
+        private void DrawGhostBlock(Block block)
+        {
+            int dropDistance = gameState.BlockDropDistance();
+            foreach (Position p in block.TilePosition())
+            {
+                //the cells where the block will land are found by adding the drop distance to the tile positions of the current block
+                //then we set opacity of the corresponding image controls to 0.25 and update the source
+                //we need to remmber to reset the opacity when we re-draw the grid and the current block
+                imageControls[p.Row + dropDistance, p.Column].Opacity = 0.25;
+                imageControls[p.Row + dropDistance, p.Column].Source = tileImages[block.Id]; 
+            }
+        }
+
         //Method to draw both the grid and the current block
         private void Draw(GameState gameState)
         {
             DrawGrid(gameState.GameGrid);
+            //DrawGhostBlock() method should be called BEFORE a DrawBlock() method
+            DrawGhostBlock(gameState.CurrentBlock);
             DrawBlock(gameState.CurrentBlock);
             DrawNextBlock(gameState.BlockQueue);
             DrawHeldBlock(gameState.HeldBlock);

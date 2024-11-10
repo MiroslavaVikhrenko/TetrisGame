@@ -135,6 +135,8 @@ namespace TetrisGame
             DrawGrid(gameState.GameGrid);
             DrawBlock(gameState.CurrentBlock);
             DrawNextBlock(gameState.BlockQueue);
+            //show the score
+            ScoreText.Text = $"Score: {gameState.Score}";
 
             //we will call the Draw method when the game canvas is loaded
         }
@@ -158,6 +160,8 @@ namespace TetrisGame
             //when we step out fromn the loop it means that the game is over
             //make the hidden Game Over menu visible
             GameOverMenu.Visibility = Visibility.Visible;
+            //show final score in the Game Over menu
+            FinalScoreText.Text = $"Score: {gameState.Score}";
 
         }
 

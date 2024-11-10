@@ -39,6 +39,10 @@ namespace TetrisGame
         public BlockQueue BlockQueue { get; }
         public bool GameOver { get; private set; }
 
+        //add Score property - here the score will be the total number of rows cleared => PlaceBlock() method
+        public int Score { get; private set; }
+
+
         //in the constructor we initialize the game grid with 22 rows and 10 colums
         //we also initialize the block queue and use it to get a random block for the current block property
         public GameState()
@@ -115,8 +119,9 @@ namespace TetrisGame
             {
                 GameGrid[p.Row, p.Column] = CurrentBlock.Id;
             }
-            //then we clear any potentially full rows 
-            GameGrid.ClearFullRows();
+            //then we clear any potentially full rows - recall that ClearFullRows() returns the number of cleared rows =>
+            //we can increment the Score by that amount
+            Score += GameGrid.ClearFullRows();
             //and check if the game is over => if it is we set gameover property to true
             if (IsGameOver())
             {

@@ -134,6 +134,7 @@ namespace TetrisGame
             //draw the game state
             Draw(gameState);
             //loop which runs until the game is over 
+            //start the game loop when the canvas has loaded
             while (!gameState.GameOver)
             {
                 //wait for 500 milliseconds, move the block down and re-draw
@@ -141,7 +142,11 @@ namespace TetrisGame
                 gameState.MoveBlockDown();
                 Draw(gameState);
             }
-            //start the game loop when the canvas has loaded
+            
+            //when we step out fromn the loop it means that the game is over
+            //make the hidden Game Over menu visible
+            GameOverMenu.Visibility = Visibility.Visible;
+
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -185,9 +190,13 @@ namespace TetrisGame
             await GameLoop();
         }
 
-        private void PlayAgain_Click(object sender, RoutedEventArgs e)
+        //Method bellow is called when a player presses the 'Play Again' button
+        private async void PlayAgain_Click(object sender, RoutedEventArgs e)
         {
-
+            //create a fresh game state, hide the game over menu and restart the game loop
+            gameState = new GameState();
+            GameOverMenu.Visibility = Visibility.Hidden;
+            await GameLoop();
         }
     }
 }

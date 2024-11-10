@@ -129,7 +129,37 @@ namespace TetrisGame
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-
+            //if the game is ended => then pressing a key should not do anything 
+            if (gameState.GameOver)
+            {
+                return;
+            }
+            //we will use the arrow keys for movement
+            switch (e.Key)
+            {
+                case Key.Left:
+                    gameState.MoveBlockLeft();
+                    break;
+                case Key.Right: 
+                    gameState.MoveBlockRight();
+                    break;
+                case Key.Down: 
+                    gameState.MoveBlockDown();
+                    break;
+                //the up arrow will rotate the block clockwise and the Z button will rotate counter-clockwise
+                case Key.Up:
+                    gameState.RotateBlockCW();
+                    break;
+                case Key.Z:
+                    gameState.RotateBlockCCW();
+                    break;
+                //add a default case where we simply return
+                default:
+                    return;
+            }
+            //outside the switch we call the Draw method
+            //the default case ensures that we only re-draw if the player presses the key that actually does something
+            Draw(gameState);
         }
 
         private void GameCanvas_Loaded(object sender, RoutedEventArgs e)

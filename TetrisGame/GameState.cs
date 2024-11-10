@@ -19,6 +19,18 @@ namespace TetrisGame
                 currentBlock = value;
                 currentBlock.Reset();
                 //when we update the current block the Reset() method is called to set the correct start position and rotation 
+                
+                //fixing the spawn position - so far the blocks spawn in the two hidden rows but if they space in row 2 and 3
+                //the top visible rows it would look better if they spawnned there
+                //below logic will move the block down by 2 rows if nothing is in the way
+                for (int i = 0; i <2; i++)
+                {
+                    currentBlock.Move(1, 0);
+                    if (!BlockFits())
+                    {
+                        currentBlock.Move(-1, 0);
+                    }
+                }
             }
         }
 

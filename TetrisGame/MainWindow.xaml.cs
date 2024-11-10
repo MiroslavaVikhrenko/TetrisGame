@@ -46,6 +46,11 @@ namespace TetrisGame
         private readonly Image[,] imageControls;
         //the idea is that there is one image control for every cell in the game grid
 
+        //add a few constants to control the delay between moving the block down 
+        private readonly int maxDelay = 1000;
+        private readonly int minDelay = 75;
+        private readonly int delayDecrease = 25;
+
         //we need a game state object
         private GameState gameState = new GameState();
 
@@ -185,8 +190,12 @@ namespace TetrisGame
             //start the game loop when the canvas has loaded
             while (!gameState.GameOver)
             {
-                //wait for 500 milliseconds, move the block down and re-draw
-                await Task.Delay(500);
+                //wait for the delay which is counted based on the current Score and set up minDelay, maxDelay and delayDecrease values
+                //when the game starts the delay will be maxDelay, for each point the player gets the delay is decreased by delayDecrease
+                //but it can never go below minDelay
+                int delay = Math.Max(minDelay, maxDelay - (gameState.Score * delayDecrease));
+                await Task.Delay(delay);
+                //move the block down and re-draw
                 gameState.MoveBlockDown();
                 Draw(gameState);
             }

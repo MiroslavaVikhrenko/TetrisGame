@@ -83,11 +83,48 @@ namespace TetrisGame
             }
             return imageControls;
             //now we have a 2-dimensional array with one image for every cell in the game grid 
+            //the 2 top rows which were used for spawning are placed above the canvas => so they are hidden
         }
 
         public MainWindow()
         {
             InitializeComponent();
+            //initiallize an image control array by calling SetupGameCanvas method
+            imageControls = SetupGameCanvas(gameState.GameGrid);
+        }
+
+        //Method to draw a game grid
+        private void DrawGrid(GameGrid grid)
+        {
+            //Loop through all positions 
+            for (int r = 0;r < grid.Rows; r++)
+            {
+                for (int c = 0;c < grid.Columns; c++)
+                {
+                    //for each position we get the start id 
+                    int id = grid[r, c];
+                    //set the source of the image at this position using the id
+                    imageControls[r,c].Source = tileImages[id];
+                }
+            }
+        }
+
+        //Method to draw the current block
+        private void DrawBlock(Block block)
+        {
+            //Loop through the tile positions and update the image sources in the same way as above
+            foreach (Position p in block.TilePosition())
+            {
+                imageControls[p.Row, p.Column].Source = tileImages[block.Id];
+            }
+        }
+
+        //Method to draw both the grid and the current block
+        private void Draw(GameState gameState)
+        {
+            DrawGrid(gameState.GameGrid);
+            DrawBlock(gameState.CurrentBlock);
+            //we will call the Draw method when the game canvas is loaded
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -97,7 +134,8 @@ namespace TetrisGame
 
         private void GameCanvas_Loaded(object sender, RoutedEventArgs e)
         {
-
+            //draw the grid and the current block
+            Draw(gameState);
         }
 
         private void PlayAgain_Click(object sender, RoutedEventArgs e)

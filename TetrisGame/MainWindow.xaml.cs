@@ -122,11 +122,20 @@ namespace TetrisGame
             }
         }
 
+        //Method to preview the next block
+        private void DrawNextBlock(BlockQueue blockQueue)
+        {
+            Block next = blockQueue.NextBlock;
+            NextImage.Source = blockImages[next.Id];
+        }
+
         //Method to draw both the grid and the current block
         private void Draw(GameState gameState)
         {
             DrawGrid(gameState.GameGrid);
             DrawBlock(gameState.CurrentBlock);
+            DrawNextBlock(gameState.BlockQueue);
+
             //we will call the Draw method when the game canvas is loaded
         }
 

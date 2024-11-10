@@ -51,7 +51,7 @@ namespace TetrisGame
 
         //Method to set up the image controls correctly in the canvas 
         private Image[,] SetupGameCanvas(GameGrid grid)
-        {
+        {           
             //the image controls array will have 22 rows and 10 columns - just like the game grid
             Image[,] imageControls = new Image[grid.Rows, grid.Columns];
             //create a variable for the width and height of each cell
@@ -72,7 +72,10 @@ namespace TetrisGame
                     //then we have to position this image control correctly 
                     //recall that we count rows from top to bottom and columns from left to right
                     //so we set the distance from the top of the canvas to the top of the image equal to (r - 2) * cell size
-                    Canvas.SetTop(imageControl, (r - 2) * cellSize);
+
+                    //when we position the images vertically we will add 10 pixels
+
+                    Canvas.SetTop(imageControl, (r - 2) * cellSize + 10);
                     //the (-2) is to push the top hidden rows up so they are NOT inside the canvas
                     //similarly the distance from the left side of the canvas to the left side of the image should be (c * cell size)
                     Canvas.SetLeft(imageControl, c * cellSize);

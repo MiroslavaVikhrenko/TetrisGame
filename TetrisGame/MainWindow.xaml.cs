@@ -127,6 +127,23 @@ namespace TetrisGame
             //we will call the Draw method when the game canvas is loaded
         }
 
+        //Method for game loop
+        //it has to be async because we want to wait without blocking the UI
+        private async Task GameLoop()
+        {
+            //draw the game state
+            Draw(gameState);
+            //loop which runs until the game is over 
+            while (!gameState.GameOver)
+            {
+                //wait for 500 milliseconds, move the block down and re-draw
+                await Task.Delay(500);
+                gameState.MoveBlockDown();
+                Draw(gameState);
+            }
+            //start the game loop when the canvas has loaded
+        }
+
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             //if the game is ended => then pressing a key should not do anything 
@@ -162,10 +179,10 @@ namespace TetrisGame
             Draw(gameState);
         }
 
-        private void GameCanvas_Loaded(object sender, RoutedEventArgs e)
+        private async void GameCanvas_Loaded(object sender, RoutedEventArgs e)
         {
-            //draw the grid and the current block
-            Draw(gameState);
+            //start game loop
+            await GameLoop();
         }
 
         private void PlayAgain_Click(object sender, RoutedEventArgs e)

@@ -129,12 +129,26 @@ namespace TetrisGame
             NextImage.Source = blockImages[next.Id];
         }
 
+        //Method to show the held block
+        private void DrawHeldBlock(Block heldBlock)
+        {
+            if (heldBlock == null)
+            {
+                HoldImage.Source = blockImages[0];
+            }
+            else
+            {
+                HoldImage.Source = blockImages[heldBlock.Id];
+            }
+        }
+
         //Method to draw both the grid and the current block
         private void Draw(GameState gameState)
         {
             DrawGrid(gameState.GameGrid);
             DrawBlock(gameState.CurrentBlock);
             DrawNextBlock(gameState.BlockQueue);
+            DrawHeldBlock(gameState.HeldBlock);
             //show the score
             ScoreText.Text = $"Score: {gameState.Score}";
 
@@ -190,6 +204,10 @@ namespace TetrisGame
                     break;
                 case Key.Z:
                     gameState.RotateBlockCCW();
+                    break;
+                //the C button will hold the block
+                case Key.C:
+                    gameState.HoldBlock();
                     break;
                 //add a default case where we simply return
                 default:

@@ -41,6 +41,9 @@ namespace TetrisGame
 
         //add Score property - here the score will be the total number of rows cleared => PlaceBlock() method
         public int Score { get; private set; }
+        //add properties for held block and CanHold boolean => in the constructor we set CanHold to true
+        public Block HeldBlock { get; private set; }
+        public bool CanHold { get; private set; }
 
 
         //in the constructor we initialize the game grid with 22 rows and 10 colums
@@ -50,6 +53,7 @@ namespace TetrisGame
             GameGrid = new GameGrid(22, 10);
             BlockQueue = new BlockQueue();
             CurrentBlock = BlockQueue.GetAndUpdate();
+            CanHold = true;
         }
 
         //!!Method to check if the current block is in a legal position or not
@@ -65,6 +69,32 @@ namespace TetrisGame
                 }
             }
             return true;
+        }
+
+        //Method to hold a block
+        public void HoldBlock()
+        {
+            //if we cannot hold then we just return 
+            if (!CanHold)
+            {
+                return;
+            }
+            //if there is no block on hold => we set the held block to the current block and the current block to the next block
+
+            if (HeldBlock == null)
+            {
+                HeldBlock = CurrentBlock;
+                CurrentBlock = BlockQueue.GetAndUpdate();               
+            }
+            else
+            {
+                //if there is a block on hold we have to swap the current block and the held block
+                Block tmp = CurrentBlock;
+                CurrentBlock = HeldBlock;
+                HeldBlock = tmp;
+            }
+            //in the end we set CanHold to false so we cannot just spam hold
+            CanHold = false;
         }
 
         //Method to rotate the current block clockwise BUT ONLY IF it's possible to do so from where it is
@@ -131,6 +161,7 @@ namespace TetrisGame
             {
                 //if not => we update the current block
                 CurrentBlock = BlockQueue.GetAndUpdate();
+                CanHold = true;
             }
             //now we can write a move down method           
         }

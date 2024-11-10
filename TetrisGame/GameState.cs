@@ -178,5 +178,37 @@ namespace TetrisGame
                 PlaceBlock();
             }
         }
+
+        //Hard drop feature => this feature moves the block down to as many rows as possible
+
+        //Method to take position and return the number of empty cells immediately below it       
+        private int TileDropDistance(Position p)
+        {
+            int drop = 0;
+            while (GameGrid.IsEmpty(p.Row + drop + 1, p.Column))
+            {
+                drop++;
+            }
+            return drop;
+        }
+
+        //Method to findout how many rows the current block can be moved down
+        //we invoke it for every tile in the current block and check the minimum
+        public int BlockDropDistance()
+        {
+            int drop = GameGrid.Rows;
+            foreach (Position p in CurrentBlock.TilePosition())
+            {
+                drop = System.Math.Min(drop, TileDropDistance(p));
+            }
+            return drop;
+        }
+
+        //Method to drop a block => it moves the current block down as many rows as possible and then places it in the grid
+        public void DropBlock()
+        {
+            CurrentBlock.Move(BlockDropDistance(), 0);
+            PlaceBlock();
+        }
     }
 }

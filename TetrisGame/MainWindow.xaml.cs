@@ -209,6 +209,10 @@ namespace TetrisGame
                 case Key.C:
                     gameState.HoldBlock();
                     break;
+                //the space bar will hard drop the block
+                case Key.Space:
+                    gameState.DropBlock();
+                    break;
                 //add a default case where we simply return
                 default:
                     return;
